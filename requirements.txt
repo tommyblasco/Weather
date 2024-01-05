@@ -1,0 +1,8 @@
+streamlit
+pandas
+DateTime
+python-dateutil
+meteostat
+geopy
+country_list
+requests
