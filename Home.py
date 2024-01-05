@@ -69,5 +69,5 @@ try:
         df_to_plot = df_temp[tmp_type]
         st.line_chart(df_to_plot)
 except Exception as e:
-    st.error("Error: city not found!")
+    #st.error("Error: city not found!")
     print(e)
