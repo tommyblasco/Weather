@@ -11,7 +11,7 @@ import requests
 st.header("The climate change")
 st.subheader("Historical weather data from all over the world")
 
-@st.cache
+@st.cache_data
 def richieste(c,p):
     rndm = str(randint(0, 10000))
     geolocator = Nominatim(user_agent=f"my-app-{rndm}")
@@ -76,12 +76,12 @@ if len(citta)>0:
         if agg_type=='By Month':
             df_temp['ym']=[str(x.year)+'{:02d}'.format(x.month) for x in df_temp['Day']]
             df_to_plot = df_temp.groupby('ym',as_index=False).agg({'Average':'mean','Temp Max':'mean','Temp Min':'mean'})
-            df_to_plot = df_to_plot[tmp_type]
+            df_to_plot = df_to_plot[['ym']+tmp_type]
             st.line_chart(df_to_plot,x='ym',y=tmp_type)
         elif agg_type=='By Year':
             df_temp['year']=[x.year for x in df_temp['Day']]
             df_to_plot = df_temp.groupby('year',as_index=False).agg({'Average':'mean','Temp Max':'mean','Temp Min':'mean'})
-            df_to_plot = df_to_plot[tmp_type]
+            df_to_plot = df_to_plot[['year']+tmp_type]
             st.line_chart(df_to_plot,x='year',y=tmp_type)
         else:
             df_to_plot = df_temp[tmp_type]
