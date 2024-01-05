@@ -1,8 +1,8 @@
-streamlit
+streamlit==1.22.0
 pandas
 DateTime
 python-dateutil
 meteostat
-geopy
+geopy==2.3.0
 country_list
 requests
