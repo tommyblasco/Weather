@@ -41,11 +41,11 @@ if len(citta)>0:
     elif span=='6M':
         start = oggi-relativedelta(months=6)
     elif span=='1Y':
-        start = oggi-relativedelta(year=1)
+        start = datetime(oggi.year-1,oggi.month,oggi.day)
     elif span=='5Y':
-        start = oggi-relativedelta(year=5)
+        start = datetime(oggi.year-5,oggi.month,oggi.day)
     elif span=='10Y':
-        start = oggi-relativedelta(year=10)
+        start = datetime(oggi.year-10,oggi.month,oggi.day)
     elif span=='Max':
         start = datetime(1900,1,1)
     else:
