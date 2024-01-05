@@ -27,7 +27,7 @@ if len(citta)>0:
     lat=address.latitude
     lon=address.longitude
     url = f"https://api.opentopodata.org/v1/aster30m?locations={lat},{lon}"
-    r = requests.get(url,verify=False)
+    r = requests.get(url)
 
     data = r.json()
     elev=data['results'][0]['elevation']
