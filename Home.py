@@ -61,9 +61,25 @@ try:
         df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
 
         st.text('Temperatures over the selected period:')
-        tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
-        df_to_plot = df_temp[tmp_type]
-        st.line_chart(df_to_plot)
+        col1, col2=st.columns([0.15,0.85])
+        with col1:
+            tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
+            agg_type=st.radio('Type of aggregation:',['By Day','By Month','By Year'])
+        with col2:
+            df_temp['Day']=df_temp.index
+            if agg_type=='By Month':
+                df_temp['ym']=[str(x.year)+'{:02d}'.format(x.month) for x in df_temp['Day']]
+                df_to_plot = df_temp.groupby('ym',as_index=False).agg({'Average':'mean','Temp Max':'mean','Temp Min':'mean'})
+                df_to_plot = df_to_plot[tmp_type]
+                st.line_chart(df_to_plot,x='ym',y=tmp_type)
+            elif agg_type=='By Year':
+                df_temp['year']=[x.year for x in df_temp['Day']]
+                df_to_plot = df_temp.groupby('year',as_index=False).agg({'Average':'mean','Temp Max':'mean','Temp Min':'mean'})
+                df_to_plot = df_to_plot[tmp_type]
+                st.line_chart(df_to_plot,x='year',y=tmp_type)
+            else:
+                df_to_plot = df_temp[tmp_type]
+                st.line_chart(df_to_plot)
 
         st.text('Where we are:')
         st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=6,color='#FF0000')
