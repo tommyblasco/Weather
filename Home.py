@@ -22,14 +22,15 @@ geolocator = Nominatim(user_agent="geoapiExercises")
 
 city = f'{citta}, {paese}'
 #try:
-address=geolocator.geocode(city)
-lat=address.latitude
-lon=address.longitude
-url = f"https://api.opentopodata.org/v1/aster30m?locations={lat},{lon}"
-r = requests.get(url)
+if len(citta)>0:
+    address=geolocator.geocode(city)
+    lat=address.latitude
+    lon=address.longitude
+    url = f"https://api.opentopodata.org/v1/aster30m?locations={lat},{lon}"
+    r = requests.get(url,verify=False)
 
-data = r.json()
-elev=data['results'][0]['elevation']
+    data = r.json()
+    elev=data['results'][0]['elevation']
 
 # Set time period
 end = oggi
