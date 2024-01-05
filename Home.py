@@ -63,7 +63,7 @@ if len(citta)>0:
     col1, col2 = st.columns(2)
     with col1:
         st.text('Where we are:')
-        st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=7,color='red')
+        st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=7,color='#FF0000')
     with col2:
         st.text('Temperatures over the selected period:')
         tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
