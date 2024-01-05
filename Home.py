@@ -11,20 +11,11 @@ import requests
 st.header("The climate change")
 st.subheader("Historical weather data from all over the world")
 
-oggi = datetime.now()
-countr = [x[1] for x in countries_for_language('en')]
-paese = st.selectbox('Choose a country',countr)
-citta = st.text_input('Write a city',placeholder='Here, in english')
-span = st.radio('Temporal Range',['1W','1M','6M','1Y','5Y','10Y','Max','Custom'],horizontal=True)
-if span=='Custom':
-    ran_date=st.date_input("Select an interval",(datetime(oggi.year,1,1),oggi),datetime(1900,1,1),oggi,format="YYYY-MM-DD")
-
-rndm = str(randint(0,10000))
-geolocator = Nominatim(user_agent=f"my-app-{rndm}")
-
-city = f'{citta}, {paese}'
-#try:
-if len(citta)>0:
+@st.cache
+def richieste(c,p):
+    rndm = str(randint(0, 10000))
+    geolocator = Nominatim(user_agent=f"my-app-{rndm}")
+    city = f'{c}, {p}'
     address=geolocator.geocode(city)
     lat=address.latitude
     lon=address.longitude
@@ -33,6 +24,19 @@ if len(citta)>0:
 
     data = r.json()
     elev=data['results'][0]['elevation']
+    return [data,lat,lon,elev]
+
+oggi = datetime.now()
+countr = [x[1] for x in countries_for_language('en')]
+paese = st.selectbox('Choose a country',countr)
+citta = st.text_input('Write a city',placeholder='Here, in english')
+span = st.radio('Temporal Range',['1W','1M','6M','1Y','5Y','10Y','Max','Custom'],horizontal=True)
+if span=='Custom':
+    ran_date=st.date_input("Select an interval",(datetime(oggi.year,1,1),oggi),datetime(1900,1,1),oggi,format="YYYY-MM-DD")
+
+#try:
+if len(citta)>0:
+    res = richieste(citta,paese)
 
     # Set time period
     end = oggi
@@ -55,10 +59,10 @@ if len(citta)>0:
         end = ran_date[1]
 
     # Create Point
-    citta = Point(lat, lon,elev)
+    town = Point(res[1],res[2],res[3])
 
     # Get daily data
-    data = Daily(citta, start, end)
+    data = Daily(town, start, end)
     df_temp = data.fetch()
     df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
 
