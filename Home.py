@@ -21,53 +21,53 @@ if span=='Custom':
 geolocator = Nominatim(user_agent="geoapiExercises")
 
 city = f'{citta}, {paese}'
-try:
-    address=geolocator.geocode(city)
-    lat=address.latitude
-    lon=address.longitude
-    url = f"https://api.opentopodata.org/v1/aster30m?locations={lat},{lon}"
-    r = requests.get(url)
+#try:
+address=geolocator.geocode(city)
+lat=address.latitude
+lon=address.longitude
+url = f"https://api.opentopodata.org/v1/aster30m?locations={lat},{lon}"
+r = requests.get(url)
 
-    data = r.json()
-    elev=data['results'][0]['elevation']
+data = r.json()
+elev=data['results'][0]['elevation']
 
-    # Set time period
-    end = oggi
-    if span=='1W':
-        start = oggi-relativedelta(weeks=1)
-    elif span=='1M':
-        start = oggi-relativedelta(months=1)
-    elif span=='6M':
-        start = oggi-relativedelta(months=6)
-    elif span=='1Y':
-        start = oggi-relativedelta(year=1)
-    elif span=='5Y':
-        start = oggi-relativedelta(year=5)
-    elif span=='10Y':
-        start = oggi-relativedelta(year=10)
-    elif span=='Max':
-        start = datetime(1900,1,1)
-    else:
-        start = ran_date[0]
-        end = ran_date[1]
+# Set time period
+end = oggi
+if span=='1W':
+    start = oggi-relativedelta(weeks=1)
+elif span=='1M':
+    start = oggi-relativedelta(months=1)
+elif span=='6M':
+    start = oggi-relativedelta(months=6)
+elif span=='1Y':
+    start = oggi-relativedelta(year=1)
+elif span=='5Y':
+    start = oggi-relativedelta(year=5)
+elif span=='10Y':
+    start = oggi-relativedelta(year=10)
+elif span=='Max':
+    start = datetime(1900,1,1)
+else:
+    start = ran_date[0]
+    end = ran_date[1]
 
-    # Create Point
-    citta = Point(lat, lon,elev)
+# Create Point
+citta = Point(lat, lon,elev)
 
-    # Get daily data
-    data = Daily(citta, start, end)
-    df_temp = data.fetch()
-    df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
+# Get daily data
+data = Daily(citta, start, end)
+df_temp = data.fetch()
+df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.text('Where we are:')
-        st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=7,color='red')
-    with col2:
-        st.text('Temperatures over the selected period:')
-        tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
-        df_to_plot = df_temp[tmp_type]
-        st.line_chart(df_to_plot)
-except Exception as e:
+col1, col2 = st.columns(2)
+with col1:
+    st.text('Where we are:')
+    st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=7,color='red')
+with col2:
+    st.text('Temperatures over the selected period:')
+    tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
+    df_to_plot = df_temp[tmp_type]
+    st.line_chart(df_to_plot)
+#except Exception as e:
     #st.error("Error: city not found!")
-    print(e)
+    #print(e)
