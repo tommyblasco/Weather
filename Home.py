@@ -18,7 +18,7 @@ span = st.radio('Temporal Range',['1W','1M','6M','1Y','5Y','10Y','Max','Custom']
 if span=='Custom':
     ran_date=st.date_input("Select an interval",(datetime(oggi.year,1,1),oggi),datetime(1900,1,1),oggi,format="YYYY-MM-DD")
 
-geolocator = Nominatim(user_agent="abcd")
+geolocator = Nominatim(user_agent="my-app")
 
 city = f'{citta}, {paese}'
 #try:
