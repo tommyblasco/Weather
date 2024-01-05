@@ -63,7 +63,7 @@ if len(citta)>0:
     df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
 
     st.text('Temperatures over the selected period:')
-    col1, col2=st.columns([0.2,0.8])
+    col1, col2=st.columns([0.25,0.75])
     with col1:
         tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
         agg_type=st.radio('Type of aggregation:',['By Day','By Month','By Year'])
@@ -84,6 +84,6 @@ if len(citta)>0:
             st.line_chart(df_to_plot)
 
     st.text('Where we are:')
-    st.map(pd.DataFrame({'lat':[lat],'lon':[lon]}),zoom=6,color='#FF0000')
+    #st.map(pd.DataFrame({'lat':[lat],'lon':[lon]}),zoom=6,color='#FF0000')
 #except:
 #    st.error("Error: city not found!")
