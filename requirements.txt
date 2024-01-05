@@ -6,4 +6,3 @@ meteostat
 geopy==2.3.0
 country_list
 requests
-random
