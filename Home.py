@@ -79,7 +79,7 @@ if len(citta)>0:
             df_to_plot = df_to_plot[['ym']+tmp_type]
             st.line_chart(df_to_plot,x='ym',y=tmp_type)
         elif agg_type=='By Year':
-            df_temp['year']=[x.year for x in df_temp['Day']]
+            df_temp['year']=[str(x.year) for x in df_temp['Day']]
             df_to_plot = df_temp.groupby('year',as_index=False).agg({'Average':'mean','Temp Max':'mean','Temp Min':'mean'})
             df_to_plot = df_to_plot[['year']+tmp_type]
             st.line_chart(df_to_plot,x='year',y=tmp_type)
@@ -88,6 +88,6 @@ if len(citta)>0:
             st.line_chart(df_to_plot)
 
     st.text('Where we are:')
-    #st.map(pd.DataFrame({'lat':[lat],'lon':[lon]}),zoom=6,color='#FF0000')
+    st.map(pd.DataFrame({'lat':[lat],'lon':[lon]}),zoom=6,color='#FF0000')
 #except:
 #    st.error("Error: city not found!")
