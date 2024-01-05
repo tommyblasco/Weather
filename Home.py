@@ -84,6 +84,6 @@ if len(citta)>0:
             st.line_chart(df_to_plot)
 
     st.text('Where we are:')
-    st.map(pd.DataFrame({'Lat':[lat],'Lon':[lon]}),latitude='Lat',longitude='Lon',zoom=6,color='#FF0000')
+    st.map(pd.DataFrame({'lat':[lat],'lon':[lon]}),zoom=6,color='#FF0000')
 #except:
 #    st.error("Error: city not found!")
