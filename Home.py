@@ -68,5 +68,6 @@ try:
         tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
         df_to_plot = df_temp[tmp_type]
         st.line_chart(df_to_plot)
-except:
+except Exception as e:
     st.error("Error: city not found!")
+    print(e)
