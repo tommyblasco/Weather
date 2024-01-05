@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from meteostat import Point, Daily
 from geopy.geocoders import Nominatim
 from country_list import countries_for_language
+from random import randint
 import requests
 
 st.header("The climate change")
@@ -18,7 +19,8 @@ span = st.radio('Temporal Range',['1W','1M','6M','1Y','5Y','10Y','Max','Custom']
 if span=='Custom':
     ran_date=st.date_input("Select an interval",(datetime(oggi.year,1,1),oggi),datetime(1900,1,1),oggi,format="YYYY-MM-DD")
 
-geolocator = Nominatim(user_agent="my-app")
+rndm = str(randint(0,10000))
+geolocator = Nominatim(user_agent=f"my-app-{rndm}")
 
 city = f'{citta}, {paese}'
 #try:
@@ -61,7 +63,7 @@ if len(citta)>0:
     df_temp = df_temp.rename(columns={'tavg':'Average','tmax':'Temp Max','tmin':'Temp Min'})
 
     st.text('Temperatures over the selected period:')
-    col1, col2=st.columns([0.15,0.85])
+    col1, col2=st.columns([0.2,0.8])
     with col1:
         tmp_type=st.multiselect('Choose what you wanna see',['Average','Temp Max','Temp Min'],['Average'])
         agg_type=st.radio('Type of aggregation:',['By Day','By Month','By Year'])
